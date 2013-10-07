@@ -3,6 +3,18 @@ import logging; logger = logging.getLogger("morserobots." + __name__)
 from morse.builder.creator import RobotCreator
 from morse.builder import Robot, WheeledRobot
 
+class Pendulum( Robot ):
+  def __init__( self, name=None ):
+    Robot.__init__( self, "pendulum" )
+    self.name = name
+    self.properties( classpath = "morse.robots.pendulum.Pendulum" )
+
+class Quadraped( Robot ):
+  def __init__( self, name=None ):
+    Robot.__init__( self, "quadraped" )
+    self.name = name
+    self.properties( classpath = "morse.robots.quadraped.Quadraped" )
+
 class ATRV(Robot):
     def __init__(self, name=None):
         Robot.__init__(self, "atrv")

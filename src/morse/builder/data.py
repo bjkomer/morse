@@ -184,6 +184,11 @@ MORSE_DATASTREAM_DICT = {
             "socket": INTERFACE_DEFAULT_OUT,
             }
         },
+    "morse.sensors.linkage_odometry.LinkageOdometry": {
+        "default" : {
+          "socket" : INTERFACE_DEFAULT_OUT
+          }
+        },
     "morse.sensors.odometry.Odometry": {
         "differential": {
             "socket": INTERFACE_DEFAULT_OUT,
@@ -202,6 +207,17 @@ MORSE_DATASTREAM_DICT = {
             "text": INTERFACE_DEFAULT_OUT,
             "pocolibs": ['morse.middleware.pocolibs.sensors.pom.PomSensorPoster',
                          'morse.middleware.pocolibs.sensors.pom.PomPoster']
+            },
+        "relative": {
+            "ros": 'morse.middleware.ros.odometry.OdometryPublisher',
+            "socket": INTERFACE_DEFAULT_OUT,
+            "yarp": INTERFACE_DEFAULT_OUT,
+            "text": INTERFACE_DEFAULT_OUT,
+            "pocolibs": ['morse.middleware.pocolibs.sensors.pom.PomSensorPoster',
+                         'morse.middleware.pocolibs.sensors.pom.PomPoster']
+            },
+        "multiple": {
+            "socket": INTERFACE_DEFAULT_OUT
             }
         },
     "morse.sensors.pose.Pose": {
@@ -271,6 +287,14 @@ MORSE_DATASTREAM_DICT = {
             "pocolibs": 'morse.middleware.pocolibs.sensors.viam.ViamPoster'
             }
         },
+    "morse.sensors.dvs_camera.DVSCamera": {
+        "default": {
+            "ros": 'morse.middleware.ros.dvs_camera.DVSCameraPublisher',
+            "socket": 'morse.middleware.sockets.video_camera.VideoPublisher',
+            "yarp": 'morse.middleware.yarp_datastream.YarpImagePublisher',
+            "pocolibs": 'morse.middleware.pocolibs.sensors.viam.ViamPoster'
+            }
+        },
 
     "morse.actuators.armature.Armature": {
         "default": {
@@ -289,6 +313,13 @@ MORSE_DATASTREAM_DICT = {
     "morse.actuators.force_torque.ForceTorque": {
         "default": {
             "ros": 'morse.middleware.ros.force_torque.WrenchReader',
+            "socket": INTERFACE_DEFAULT_IN,
+            },
+        "local": {
+            "socket":INTERFACE_DEFAULT_IN,
+            },
+        "multiple": {
+            "socket":INTERFACE_DEFAULT_IN,
             }
         },
     "morse.actuators.gripper.Gripper": {
@@ -328,20 +359,17 @@ MORSE_DATASTREAM_DICT = {
     "morse.actuators.rotorcraft_attitude.RotorcraftAttitude": {
         "default": {
             "socket": INTERFACE_DEFAULT_IN,
-            "yarp": INTERFACE_DEFAULT_IN,
             }
         },
     "morse.actuators.rotorcraft_waypoint.RotorcraftWaypoint": {
         "default": {
             "ros": 'morse.middleware.ros.read_pose.PoseReader',
             "socket": INTERFACE_DEFAULT_IN,
-            "yarp": INTERFACE_DEFAULT_IN,
             }
         },
     "morse.actuators.stabilized_quadrotor.StabilizedQuadrotor": {
         "default": {
             "socket": INTERFACE_DEFAULT_IN,
-            "yarp": INTERFACE_DEFAULT_IN,
             }
         },
         "morse.actuators.steer_force.SteerForce": {
@@ -373,7 +401,6 @@ MORSE_DATASTREAM_DICT = {
         "default": {
             "ros": 'morse.middleware.ros.motion_xyw.TwistReader',
             "socket": INTERFACE_DEFAULT_IN,
-            "yarp": INTERFACE_DEFAULT_IN,
             }
         },
     "morse.actuators.teleport.Teleport": {

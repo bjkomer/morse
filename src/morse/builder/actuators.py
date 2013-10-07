@@ -57,6 +57,12 @@ class KukaLWR(Actuator):
         self.name = name
         self.properties(classpath = "morse.actuators.armature.Armature")
 
+class Pendulum_Actuator(Actuator):
+    def __init__(self, name=None):
+        Actuator.__init__(self, "pendulum")
+        self.name = name
+        self.properties(classpath = "morse.actuators.armature.Armature")
+
 class Mocap(ActuatorCreator):
     def __init__(self, name=None):
         ActuatorCreator.__init__(self, name, \

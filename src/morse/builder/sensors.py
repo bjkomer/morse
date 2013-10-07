@@ -63,6 +63,14 @@ class JidoPosture(SensorCreator):
         SensorCreator.__init__(self, name, "morse.sensors.jido_posture.JidoPosture", "jido_posture")
         self.properties(KUKAname = "KUKA_LWR", PTUname = "PTU")
 
+class LinkageOdometry(SensorCreator):
+    def __init__(self, name=None):
+        SensorCreator.__init__(self, name, "morse.sensors.linkage_odometry.LinkageOdometry", "linkage_odometry")
+        #mesh = Cylinder("OdometryCylinder")
+        #mesh.scale = (.02, .02, .02)
+        #mesh.color(.5, .5, .5)
+        #self.append(mesh)
+
 class Odometry(SensorCreator):
     def __init__(self, name=None):
         SensorCreator.__init__(self, name, "morse.sensors.odometry.Odometry", "odometry")
@@ -350,6 +358,13 @@ class VideoCamera(SensorCreator):
         self.append_meshes(['CameraMesh'], "camera")
     def rotate(self, x=0, y=0, z=0):
         SensorCreator.rotate(self, x=y, y=z, z=x)
+
+class DVSCamera(VideoCamera):
+    def __init__(self, name=None):
+        VideoCamera.__init__(self, name, \
+                             "morse.sensors.dvs_camera.DVSCamera",\
+                             "dvs_camera")
+        self.frequency( 30 )
 
 class DepthCamera(VideoCamera):
     def __init__(self, name=None):
