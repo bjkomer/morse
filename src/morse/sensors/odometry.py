@@ -1,3 +1,5 @@
+# <path>/morse/sensors/odometry.py
+
 import logging; logger = logging.getLogger("morse." + __name__)
 from morse.helpers.morse_math import normalise_angle
 import morse.core.sensor
@@ -26,6 +28,7 @@ class Odometry(morse.core.sensor.Sensor):
     add_level("raw", "morse.sensors.odometry.RawOdometry", doc = "raw odometry: only dS is exported")
     add_level("differential", None, doc = "differential odometry, corresponding to standard 'robot level' odometry")
     add_level("integrated", "morse.sensors.odometry.IntegratedOdometry", doc = "integrated odometry: absolution position is exported", default=True)
+    add_level("relative", "morse.sensors.odometry.RelativeOdometry", doc = "relative integrated odometry: absolution position relative to base of the robot is exported")
 
     add_data('dS', 0.0, "float","curvilign distance since last tick", level = "raw")
     add_data('dx', 0.0, "float","delta of X coordinate of the sensor", level = "differential")
@@ -46,6 +49,19 @@ class Odometry(morse.core.sensor.Sensor):
     add_data('wz', 0.0, "float","angular velocity related to the Z coordinate of the sensor", level = "integrated")
     add_data('wy', 0.0, "float","angular velocity related to the Y coordinate of the sensor", level = "integrated")
     add_data('wx', 0.0, "float","angular velocity related to the X coordinate of the sensor", level = "integrated")
+
+    add_data('x', 0.0, "float","X coordinate of the sensor", level = "relative")
+    add_data('y', 0.0, "float","Y coordinate of the sensor", level = "relative")
+    add_data('z', 0.0, "float","Z coordinate of the sensor", level = "relative")
+    add_data('yaw', 0.0, "float","rotation angle with respect to the Z axis", level = "relative")
+    add_data('pitch', 0.0, "float","rotation angle with respect to the Y axis", level = "relative")
+    add_data('roll', 0.0, "float","rotation angle with respect to the X axis", level = "relative")
+    add_data('vx', 0.0, "float","linear velocity related to the X coordinate of the sensor", level = "relative")
+    add_data('vy', 0.0, "float","linear velocity related to the Y coordinate of the sensor", level = "relative")
+    add_data('vz', 0.0, "float","linear velocity related to the Z coordinate of the sensor", level = "relative")
+    add_data('wz', 0.0, "float","angular velocity related to the Z coordinate of the sensor", level = "relative")
+    add_data('wy', 0.0, "float","angular velocity related to the Y coordinate of the sensor", level = "relative")
+    add_data('wx', 0.0, "float","angular velocity related to the X coordinate of the sensor", level = "relative")
 
 
     def __init__(self, obj, parent=None):
@@ -137,3 +153,39 @@ class IntegratedOdometry(Odometry):
         # Store the 'new' previous data
         self.previous_pos = current_pos
 
+# This class is a hack to get the pendulum working
+class RelativeOdometry(Odometry):
+
+    def __init__(self, obj, parent=None):
+        # Call the constructor of the parent class
+        super(RelativeOdometry, self).__init__(obj, parent)
+    
+    def default_action(self):
+        # Compute the position of the base within the original frame
+        ##base_pos = 
+        current_pos = self.original_pos.transformation3d_with(self.position_3d)
+        # Compute the position of the sensor relative to the base
+        import bge
+        p_euler = bge.logic.getCurrentScene().objects["pendulum"].worldOrientation.to_euler()
+        b_euler = bge.logic.getCurrentScene().objects["Base"].worldOrientation.to_euler()
+        #print( p_euler.x - b_euler.x )
+
+        # Integrated version
+        self.local_data['x'] = current_pos.x
+        self.local_data['y'] = current_pos.y
+        self.local_data['z'] = current_pos.z
+        self.local_data['yaw'] = p_euler.z - b_euler.z #current_pos.yaw
+        self.local_data['pitch'] = p_euler.y - b_euler.y #current_pos.pitch
+        self.local_data['roll'] = p_euler.x - b_euler.x #current_pos.roll
+
+        # speed in the sensor frame, related to the robot pose
+        self.delta_pos = self.previous_pos.transformation3d_with(current_pos)
+        self.local_data['vx'] = self.delta_pos.x * self.frequency
+        self.local_data['vy'] = self.delta_pos.y * self.frequency
+        self.local_data['vz'] = self.delta_pos.z * self.frequency
+        self.local_data['wz'] = self.delta_pos.yaw * self.frequency
+        self.local_data['wy'] = self.delta_pos.pitch * self.frequency
+        self.local_data['wx'] = self.delta_pos.roll * self.frequency
+
+        # Store the 'new' previous data
+        self.previous_pos = current_pos
