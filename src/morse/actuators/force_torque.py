@@ -111,13 +111,13 @@ class MultipleForceTorque( ForceTorque ):
         robot = self.robot_parent
  
         import bge
-        component_list = None
+        component_dict = {}
         try:
-            component_list = self.local_data['data'] # A list of dictionaries
+            component_dict = self.local_data['data'] # A list of dictionaries
         except:
-            component_list = None
+            component_dict = {}
         
-        for c in component_list:
+        for c in component_dict:
             
             try:
                 component = bge.logic.getCurrentScene().objects[ c['component'] ]
