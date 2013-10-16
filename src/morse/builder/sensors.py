@@ -71,6 +71,13 @@ class LinkageOdometry(SensorCreator):
         #mesh.color(.5, .5, .5)
         #self.append(mesh)
 
+class RelativeOdometry(SensorCreator):
+    def __init__(self, from_component, to_component, name=None):
+        SensorCreator.__init__(self, name,
+                               "morse.sensors.relative_odometry.RelativeOdometry",
+                               "relative_odometry")
+        self.properties( from_component=from_component, to_component=to_component )
+
 class Odometry(SensorCreator):
     def __init__(self, name=None):
         SensorCreator.__init__(self, name, "morse.sensors.odometry.Odometry", "odometry")

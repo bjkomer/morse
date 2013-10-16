@@ -156,18 +156,18 @@ class IntegratedOdometry(Odometry):
 # This class is a hack to get the pendulum working
 class RelativeOdometry(Odometry):
 
-    def __init__(self, obj, parent=None):
+    def __init__(self, obj, parent=None, from_component=None, to_component=None):
         # Call the constructor of the parent class
         super(RelativeOdometry, self).__init__(obj, parent)
-    
+
     def default_action(self):
         # Compute the position of the base within the original frame
         ##base_pos = 
         current_pos = self.original_pos.transformation3d_with(self.position_3d)
         # Compute the position of the sensor relative to the base
         import bge
-        p_euler = bge.logic.getCurrentScene().objects["pendulum"].worldOrientation.to_euler()
-        b_euler = bge.logic.getCurrentScene().objects["Base"].worldOrientation.to_euler()
+        p_euler = bge.logic.getCurrentScene().objects[ "Pendulum" ].worldOrientation.to_euler()
+        b_euler = bge.logic.getCurrentScene().objects[ "Base" ].worldOrientation.to_euler()
         #print( p_euler.x - b_euler.x )
 
         # Integrated version

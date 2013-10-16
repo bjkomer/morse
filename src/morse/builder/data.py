@@ -189,6 +189,11 @@ MORSE_DATASTREAM_DICT = {
           "socket" : INTERFACE_DEFAULT_OUT
           }
         },
+    "morse.sensors.relative_odometry.RelativeOdometry": {
+        "default" : {
+          "socket" : INTERFACE_DEFAULT_OUT
+          }
+        },
     "morse.sensors.odometry.Odometry": {
         "differential": {
             "socket": INTERFACE_DEFAULT_OUT,
