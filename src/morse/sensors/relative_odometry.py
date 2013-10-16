@@ -33,10 +33,10 @@ class RelativeOdometry(morse.core.sensor.Sensor):
         # Call the constructor of the parent class
         super(RelativeOdometry, self).__init__(obj, parent)
         
-        self.original_pos = copy.copy(self.position_3d)
+        #self.original_pos = copy.copy(self.position_3d)
 
-        self.previous_pos = self.original_pos.transformation3d_with(
-                                                            self.position_3d)
+        #self.previous_pos = self.original_pos.transformation3d_with(
+        #                                                    self.position_3d)
 
         logger.info('Component initialized')
     
@@ -88,4 +88,4 @@ class RelativeOdometry(morse.core.sensor.Sensor):
 
 
         # Store the 'new' previous data
-        self.previous_pos = current_pos
+        #self.previous_pos = current_pos
