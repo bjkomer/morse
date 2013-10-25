@@ -363,6 +363,7 @@ MORSE_DATASTREAM_DICT = {
         },
     "morse.actuators.rotorcraft_attitude.RotorcraftAttitude": {
         "default": {
+            "ros": 'morse.middleware.ros.rotorcraft_attitude.AttitudeReader',
             "socket": INTERFACE_DEFAULT_IN,
             }
         },
