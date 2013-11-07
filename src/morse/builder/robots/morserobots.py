@@ -9,6 +9,12 @@ class Arm( Robot ):
     self.name = name
     self.properties( classpath = "morse.robots.arm.Arm" )
 
+class Artillery( Robot ):
+  def __init__( self, name=None ):
+    Robot.__init__( self, "artillery" )
+    self.name = name
+    self.properties( classpath = "morse.robots.artillery.Artillery" )
+
 class Pendulum( Robot ):
   def __init__( self, name=None ):
     Robot.__init__( self, "pendulum" )
