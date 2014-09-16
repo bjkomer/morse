@@ -104,8 +104,49 @@ class FixedSimulationStepStrategy:
             self._last_time = time.time()
             self._stat_jitter.update(ds)
 
+# XXX - new method for syncing with nengo
+class SynchronizedSimulationStepStrategy:
+    def __init__ (self):
+        self.time = time.time()
+        #self._incr = 1.0 / blenderapi.getfrequency()
+        self._incr = 0.001 # TEMP: the default dt of the nengo simulator
+
+        self._stat_jitter = Stats()
+        self._last_time = 0.0
+
+        logger.info('Morse configured in Fixed Simulation Step Mode with '
+                    'time step of %f sec' %
+                    (self._incr))
+
+    def update (self):
+        self.time = self.time + self._incr
+        self._update_statistics()
+
+    def name (self):
+        return 'Synchronized Simulation Step'
+
+    @property
+    def mean(self):
+        return self._incr
+
+    def statistics (self):
+        return {
+            "mean_time" : self._stat_jitter.mean,
+            "variance_time": self._stat_jitter.variance,
+            "diff_real_time": self.time - time.time()
+        }
+
+    def _update_statistics(self):
+        if self._last_time == 0.0:
+            self._last_time = time.time()
+        else:
+            ds = time.time() - self._last_time
+            self._last_time = time.time()
+            self._stat_jitter.update(ds)
+
 class TimeStrategies:
-    (BestEffort, FixedSimulationStep) = range(2)
+    #(BestEffort, FixedSimulationStep) = range(2)
+    (BestEffort, FixedSimulationStep, SynchronizedSimulationStep) = range(3)
 
     internal_mapping = {
         BestEffort:
@@ -117,6 +158,11 @@ class TimeStrategies:
             { "impl": FixedSimulationStepStrategy,
               "python_repr": b"TimeStrategies.FixedSimulationStep",
               "human_repr": "Fixed Simulation Step"
+            },
+        SynchronizedSimulationStep:
+            { "impl": SynchronizedSimulationStepStrategy,
+              "python_repr": b"TimeStrategies.SynchronizedSimulationStep",
+              "human_repr": "Synchronized Simulation Step"
             }
         }
 

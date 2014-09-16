@@ -428,6 +428,8 @@ class Environment(Component):
             bpymorse.get_context_scene().game_settings.use_frame_rate = 0
         elif strategy == TimeStrategies.BestEffort:
             bpymorse.get_context_scene().game_settings.use_frame_rate = 1
+        elif strategy == TimeStrategies.SynchronizedSimulationStep: #nengo
+            bpymorse.get_context_scene().game_settings.use_frame_rate = 0
         else:
             raise ValueError(strategy)
 
