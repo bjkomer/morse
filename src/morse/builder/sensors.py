@@ -418,6 +418,16 @@ class VideoCamera(SensorCreator):
     def rotate(self, x=0, y=0, z=0):
         SensorCreator.rotate(self, x=y, y=z, z=x)
 
+class DVSCamera(VideoCamera):
+    _classpath = "morse.sensors.dvs_camera.DVSCamera"
+    _blendname = "camera"
+
+    def __init__(self, name=None):
+        VideoCamera.__init__(self, name)
+        self.properties(cam_width = 256, cam_height= 256, cam_focal = 35.0,
+                        capturing = True, Vertical_Flip = True)
+        self.frequency(20)
+
 class DepthCamera(VideoCamera):
     _classpath = "morse.sensors.depth_camera.DepthCamera"
     _blendname = "camera"
