@@ -300,6 +300,14 @@ MORSE_DATASTREAM_DICT = {
             "pocolibs": 'morse.middleware.pocolibs.sensors.viam.ViamPoster'
             }
         },
+    "morse.sensors.dvs_camera.DVSCamera": {
+        "default": {
+            "ros": 'morse.middleware.ros.dvs_camera.DVSCameraPublisher',
+            "socket": 'morse.middleware.sockets.dvs_camera.DVSCameraPublisher',
+            "yarp": 'morse.middleware.yarp_datastream.YarpImagePublisher',
+            "pocolibs": 'morse.middleware.pocolibs.sensors.viam.ViamPoster'
+            }
+        },
     "morse.sensors.depth_camera.DepthVideoCamera": {
         "default": {
             "ros": 'morse.middleware.ros.video_camera.DepthCameraPublisher',
